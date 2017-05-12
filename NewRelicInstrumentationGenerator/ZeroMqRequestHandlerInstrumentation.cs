@@ -13,6 +13,16 @@
         {
         }
 
+        protected override string GetDefaultTracerFactoriesXml()
+        {
+            return
+@"    <tracerFactory name=""NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory"" metricName=""ZeroMQServer/GeneralPipeline"">
+      <match assemblyName=""IQ.Auth.OAuth2.ZeroMQServer"" className=""IQ.Auth.OAuth2.ZeroMQServer.Pipeline.ZeroMQWorkerPipeline"">
+        <exactMethodMatcher methodName=""Execute"" parameters=""System.Byte[]"" />
+      </match>
+    </tracerFactory>";
+        }
+
         private string Sanitize(string input)
         {
             var replaceableTerms = new[] { "RequestHandler" };

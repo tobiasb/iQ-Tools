@@ -16,7 +16,7 @@ namespace NewRelicInstrumentationGenerator
 @"<?xml version=""1.0"" encoding=""utf-8"" ?>
 <extension xmlns=""urn:newrelic-extension"">
   <instrumentation>
-{0}
+{0}{1}
   </instrumentation>
 </extension>
 ";
@@ -29,12 +29,21 @@ namespace NewRelicInstrumentationGenerator
 
         protected abstract string GenerateTracerFactoryXml((string, string) tuple);
 
+        protected virtual string GetDefaultTracerFactoriesXml()
+        {
+            return string.Empty;
+        }
+
         public string Generate()
         {
             var result = GetTypesAndTypeArgument(_baseFolder, _baseClassIdentifier);
+            var defaultTracerFactoryXml = GetDefaultTracerFactoriesXml();
             var tracerFactoriesXml = string.Join(Environment.NewLine, result.Select(GenerateTracerFactoryXml));
-            return string.Format(NewRelicFileBase, tracerFactoriesXml);
+            var tracerFactoriesPrefix = defaultTracerFactoryXml != string.Empty ? Environment.NewLine : string.Empty;
+
+            return string.Format(NewRelicFileBase, defaultTracerFactoryXml, tracerFactoriesPrefix + tracerFactoriesXml);
         }
+
 
         private static IEnumerable<(string, string)> GetTypesAndTypeArgument(string path, string baseClassName)
         {
