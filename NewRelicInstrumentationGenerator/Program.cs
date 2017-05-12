@@ -1,13 +1,27 @@
 ﻿using System.IO;
+using System.Linq;
 
 namespace NewRelicInstrumentationGenerator
 {
     public class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
-            GenerateZeroMqRequestHandlerInstrumentationXml();
-            GenerateServiceBusMessageHandlerInstrumentationXml();
+            var generateZmqHandlerInstrumentationXml = false;
+            var generateMessageHandlerInstrumentationXml = false;
+
+            if (args.Length == 0 || args.Contains("zmq")) generateZmqHandlerInstrumentationXml = true;
+            if (args.Length == 0 || args.Contains("asb")) generateMessageHandlerInstrumentationXml = true;
+
+            if (generateZmqHandlerInstrumentationXml)
+            {
+                GenerateZeroMqRequestHandlerInstrumentationXml();
+            }
+
+            if (generateMessageHandlerInstrumentationXml)
+            {
+                GenerateServiceBusMessageHandlerInstrumentationXml();
+            }
         }
         
         private static void GenerateZeroMqRequestHandlerInstrumentationXml()
