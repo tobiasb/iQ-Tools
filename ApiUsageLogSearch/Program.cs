@@ -27,7 +27,7 @@ namespace APILogSearch
 
             var startAndEnd = FindStartAndEndRecord(targetDateStart.Value, targetDateEnd.Value);
 
-            var command = $"select * from ApiUsageDataRecords where rowid between {startAndEnd[0].RowId} and {startAndEnd[1].RowId} ;";
+            var command = $"select * from ApiUsageDataRecords where rowid between {startAndEnd[0].RowId} and {startAndEnd[1].RowId} ";
             Clipboard.SetText(command);
             Console.WriteLine($"[{command}] copied to clipboard");
         }
